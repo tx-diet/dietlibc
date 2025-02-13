@@ -54,3 +54,6 @@ skip0x:
   }
   return (neg?-v:v);
 }
+
+unsigned long int __isoc23_strtoul(const char *ptr, char **endptr, int base)
+__THROW __attribute__((alias("strtoul")));

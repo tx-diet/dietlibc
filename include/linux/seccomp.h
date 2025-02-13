@@ -150,4 +150,6 @@ struct seccomp_notif_addfd {
 
 #define SECCOMP_IOCTL_NOTIF_SET_FLAGS	SECCOMP_IOW(4, __u64)
 
+int seccomp(unsigned int operation, unsigned int flags, void *args);
+
 #endif /* _UAPI_LINUX_SECCOMP_H */
