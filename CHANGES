@@ -5,6 +5,7 @@
   make getauxval available as __getauxval as well
   arm64 fixes (still not fully supported)
   update linux/seccomp.h
+  add seccomp wrapper (prototype in linux/seccomp.h)
 
 0.35:
   fix pic for x32
