@@ -6,6 +6,7 @@
   arm64 fixes (still not fully supported)
   update linux/seccomp.h
   add seccomp wrapper (prototype in linux/seccomp.h)
+  add __isoc23_strtoul alias to strtoul
 
 0.35:
   fix pic for x32
