@@ -7,6 +7,8 @@
   update linux/seccomp.h
   add seccomp wrapper (prototype in linux/seccomp.h)
   add __isoc23_strtoul alias to strtoul
+  move uint32_t and friends from inttypes.h to stdint.h
+  add be16toh and friends to endian.h
 
 0.35:
   fix pic for x32
