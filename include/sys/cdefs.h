@@ -206,9 +206,16 @@
 #define __access(a,b)
 #define __access3(a,b,c)
 #endif
+#if __has_attribute(nonnull_if_nonzero)
+#define __nonnull_ifnz(idx,szidx) nonnull_if_nonzero(idx,szidx)
+#else
+#define __nonnull_ifnz(idx,szidx)
+#endif
 #define __strin(idx) __attribute__((nonnull(idx),__access(read_only,idx),null_terminated_string_arg(idx)))
-#define __strnin(idx,szidx) __attribute__((nonnull(idx),__access3(read_only,idx,szidx),null_terminated_string_arg(idx)))
+#define __strnin(idx,szidx) __attribute__((nonnull(idx),__access3(read_only,idx,szidx)))
+#define __strnin_ornull(idx,szidx) __attribute__((__nonnull_ifnz(idx,szidx),__access3(read_only,idx,szidx)))
 #define __bufin(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(read_only,bufidx,szidx)))
+#define __bufin_ornull(bufidx,szidx) __attribute__((__nonnull_ifnz(bufidx,szidx),__access3(read_only,bufidx,szidx)))
 #define __strout(idx) __attribute__((nonnull(idx),__access(write_only,idx)))
 #define __strnout(idx,szidx) __attribute__((nonnull(idx),__access3(write_only,idx,szidx)))
 #define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(write_only,bufidx,szidx)))
