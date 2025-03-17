@@ -35,25 +35,51 @@ struct dirent64 {
 typedef struct __dirstream DIR;
 
 __nonnull((1))
+__free(1)
 int closedir (DIR *__dirp) __THROW;
+
 __attribute__((__warn_unused_result__))
 __attribute_specific_free__(closedir,1)
+__new
+__strin(1)
 DIR *opendir (const char *__name) __THROW;
+
 __attribute__((__warn_unused_result__))
 __attribute_specific_free__(closedir,1)
+__new
 DIR *fdopendir (int fd) __THROW;
+
+__attribute__((__warn_unused_result__))
+__nonnull((1))
 struct dirent *readdir (DIR *__dirp) __THROW;
+
 #if (_POSIX_C_SOURCE>=1) || defined(_XOPEN_SOURCE) || defined(_BSD_SOURCE) || defined(_SVID_SOURCE) || defined(_POSIX_SOURCE)
+__attribute__((__warn_unused_result__))
+__nonnull((1,2,3))
 int readdir_r (DIR* __dirp, struct dirent* entry, struct dirent** result) __THROW;
 #endif
+
+__attribute__((__warn_unused_result__))
+__nonnull((1))
 struct dirent64 *readdir64 (DIR *__dirp) __THROW;
+
+__nonnull((1))
 void rewinddir (DIR *__dirp) __THROW;
+
+__nonnull((1))
 void seekdir (DIR *__dirp, off_t __pos) __THROW;
+
+__attribute__((__warn_unused_result__))
+__nonnull((1))
 off_t telldir (DIR *__dirp) __THROW;
 
+__strin(1) __nonnull((2))
+__attribute__((__warn_unused_result__))
 int scandir(const char *dir, struct dirent ***namelist,
       int (*selection)(const struct dirent *),
       int (*compar)(const struct dirent **, const struct dirent **));
+__strin(1) __nonnull((2))
+__attribute__((__warn_unused_result__))
 int scandir64(const char *dir, struct dirent64 ***namelist,
       int (*selection)(const struct dirent64 *),
       int (*compar)(const struct dirent64 **, const struct dirent64 **));
@@ -63,6 +89,8 @@ int alphasort64(const struct dirent64 **a, const struct dirent64 **b) __THROW __
 
 #define MAXNAMLEN NAME_MAX
 
+__attribute__((__warn_unused_result__))
+__nonnull((1))
 extern int dirfd(DIR *dirp) __THROW;
 
 #if defined _FILE_OFFSET_BITS && _FILE_OFFSET_BITS == 64

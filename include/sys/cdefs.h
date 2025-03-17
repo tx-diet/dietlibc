@@ -199,14 +199,31 @@
 #define null_terminated_string_arg(x)
 #endif
 
-#define __strin(idx) __attribute__((nonnull(idx),access(read_only,idx),null_terminated_string_arg(idx)))
-#define __strnin(idx,szidx) __attribute__((nonnull(idx),access(read_only,idx,szidx),null_terminated_string_arg(idx)))
-#define __bufin(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_only,bufidx,szidx)))
-#define __strout(idx) __attribute__((nonnull(idx),access(write_only,idx)))
-#define __strnout(idx,szidx) __attribute__((nonnull(idx),access(write_only,idx,szidx)))
-#define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx),access(write_only,bufidx,szidx)))
-#define __strinout(idx) __attribute__((nonnull(idx),access(read_write,idx)))
-#define __strninout(idx,szidx) __attribute__((nonnull(idx),access(read_write,idx,szidx),null_terminated_string_arg(idx)))
-#define __bufinout(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_write,bufidx,szidx)))
+#if __has_attribute(access)
+#define __access(a,b) access(a,b)
+#define __access3(a,b,c) access(a,b,c)
+#else
+#define __access(a,b)
+#define __access3(a,b,c)
+#endif
+#define __strin(idx) __attribute__((nonnull(idx),__access(read_only,idx),null_terminated_string_arg(idx)))
+#define __strnin(idx,szidx) __attribute__((nonnull(idx),__access3(read_only,idx,szidx),null_terminated_string_arg(idx)))
+#define __bufin(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(read_only,bufidx,szidx)))
+#define __strout(idx) __attribute__((nonnull(idx),__access(write_only,idx)))
+#define __strnout(idx,szidx) __attribute__((nonnull(idx),__access3(write_only,idx,szidx)))
+#define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(write_only,bufidx,szidx)))
+#define __strinout(idx) __attribute__((nonnull(idx),__access(read_write,idx)))
+#define __strninout(idx,szidx) __attribute__((nonnull(idx),__access3(read_write,idx,szidx),null_terminated_string_arg(idx)))
+#define __bufinout(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(read_write,bufidx,szidx)))
+
+#if __has_attribute(ownership_takes)
+#define __new __attribute__((ownership_returns(malloc)))
+#define __free(idx) __attribute__((ownership_takes(malloc, idx)))
+#define __holds(idx) __attribute__((ownership_holds(malloc, idx)))
+#else
+#define __new
+#define __free(idx)
+#define __holds(idx)
+#endif
 
 #endif
