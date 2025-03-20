@@ -87,11 +87,11 @@ ssize_t __libc_write(int fd,const void*buf,size_t len);
 #endif
 
 __attribute__((__warn_unused_result__))
-__attribute_specific_free__(fclose,1)
+__new(fclose,1)
 FILE *fopen_unlocked(const char *path, const char *mode) __THROW;
 
 __attribute__((__warn_unused_result__))
-__attribute_specific_free__(fclose,1)
+__new(fclose,1)
 FILE *fdopen_unlocked(int fildes, const char *mode) __THROW;
 
 __attribute__((__warn_unused_result__))
