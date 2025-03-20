@@ -35,18 +35,16 @@ struct dirent64 {
 typedef struct __dirstream DIR;
 
 __nonnull((1))
-__free(1)
+__free(closedir,1)
 int closedir (DIR *__dirp) __THROW;
 
 __attribute__((__warn_unused_result__))
-__attribute_specific_free__(closedir,1)
-__new
+__new(closedir,1)
 __strin(1)
 DIR *opendir (const char *__name) __THROW;
 
 __attribute__((__warn_unused_result__))
-__attribute_specific_free__(closedir,1)
-__new
+__new(closedir,1)
 DIR *fdopendir (int fd) __THROW;
 
 __attribute__((__warn_unused_result__))

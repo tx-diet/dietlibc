@@ -226,14 +226,36 @@
 #define __strninout(idx,szidx) __attribute__((nonnull(idx),__access3(read_write,idx,szidx),null_terminated_string_arg(idx)))
 #define __bufinout(bufidx,szidx) __attribute__((nonnull(bufidx),__access3(read_write,bufidx,szidx)))
 
+// gcc and clang have different ways to declare a specific free function.
+// clang is more advanced, so we'll define macros that work with both
 #if __has_attribute(ownership_takes)
-#define __new __attribute__((ownership_returns(malloc)))
-#define __free(idx) __attribute__((ownership_takes(malloc, idx)))
-#define __holds(idx) __attribute__((ownership_holds(malloc, idx)))
+// clang lets us give a name for a malloc/free combo.
+// gcc lets us name a specific free function.
+// the macros will take the name of the free function so they work with
+// gcc and clang won't mind, it just wants any consistent name.
+// use __new(name_of_free_func, ptr_arg_idx_for_free_func)
+//   void* __new(myfree, 1) mymalloc(size_t n);
+// use __free(name_of_free_func, ptr_arg_idx)
+//   void __free(myfree, 1) myfree(void* p);
+// use __holds(name_of_free_func, ptr_arg_idx)
+//   int __holds(myfree, 1) transfer_ownership(list* transferto, void* p);
+// __holds tells clang that you gave ownership of the pointer to someone
+// else and they will free it at some future point in time. __free will
+// warn if you dereference the pointer after giving up ownership,
+// __holds will not.
+// Use id malloc for __free and __holds to say you consume memory
+// allocated by malloc (special cased by clang and gcc won't see).
+#define __new(id,idx) __attribute__((ownership_returns(id)))
+#define __free(id,idx) __attribute__((ownership_takes(id, idx)))
+#define __holds(id,idx) __attribute__((ownership_holds(id, idx)))
+#elif __GNUC__ >= 11
+#define __new(id,idx) __attribute__((malloc(id,idx)))
+#define __free(id,idx)
+#define __holds(id,idx)
 #else
-#define __new
-#define __free(idx)
-#define __holds(idx)
+#define __new(id,idx)
+#define __free(id,idx)
+#define __holds(id,idx)
 #endif
 
 #endif

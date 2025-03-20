@@ -13,18 +13,20 @@ typedef struct __stdio_file FILE;
 
 extern FILE *stdin, *stdout, *stderr;
 
+__free(fclose,1)
 int fclose(FILE *stream) __THROW;
 int fclose_unlocked(FILE *stream) __THROW;
 
 __attribute__((__warn_unused_result__))
-__attribute_specific_free__(fclose,1)
+__new(fclose,1)
 FILE *fopen (const char *path, const char *mode) __THROW;
 
 __attribute__((__warn_unused_result__))
-__attribute_specific_free__(fclose,1)
+__new(fclose,1)
 FILE *fdopen (int fildes, const char *mode) __THROW;
 
 __attribute__((__warn_unused_result__))
+__new(fclose,1) __free(fclose,3)
 FILE *freopen (const char *path, const char *mode, FILE *stream) __THROW;
 
 int printf(const char *format, ...) __THROW __attribute__((__format__(__printf__,1,2)));
@@ -204,9 +206,10 @@ inline int setlinebuf(FILE *stream) __THROW
   { return setvbuf(stream,0,_IOLBF,BUFSIZ); }
 #endif
 
+__free(pclose,1)
 int pclose(FILE *stream) __THROW;
 __attribute__((__warn_unused_result__))
-__attribute_specific_free__(pclose,1)
+__new(pclose,1)
 FILE *popen(const char *command, const char *type) __THROW;
 
 #ifndef SEEK_SET
@@ -224,7 +227,7 @@ __attribute__((__warn_unused_result__))
 char* tempnam(char* dir,char* _template);	/* dito */
 
 __attribute__((__warn_unused_result__))
-__attribute_specific_free__(fclose,1)
+__new(fclose,1)
 FILE* tmpfile(void) __THROW;
 
 __attribute__((__warn_unused_result__))
