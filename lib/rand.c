@@ -9,5 +9,5 @@ int rand(void) {
 
 void srand(unsigned int i) { seed=i?i:23; }
 
-int random(void) __attribute__((__leaf, nothrow, alias("rand")));
-void srandom(unsigned int i) __attribute__((__leaf, nothrow, alias("srand")));
+int random(void) __attribute__((__att_leaf, nothrow, alias("rand")));
+void srandom(unsigned int i) __attribute__((__att_leaf, nothrow, alias("srand")));

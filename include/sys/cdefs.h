@@ -21,19 +21,19 @@
 #endif
 
 #if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 6))
-#define __leaf , __leaf__
+#define __att_leaf , __leaf__
 #else
-#define __leaf
+#define __att_leaf
 #endif
 
 #if defined(__clang__) && __has_attribute(leaf)
-#undef __leaf
-#define __leaf
+#undef __att_leaf
+#define __att_leaf
 #endif
 
 #if !defined(__cplusplus) && ((__GNUC__ > 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 3)))
 #undef __THROW
-#define __THROW __attribute__((__nothrow__ __leaf))
+#define __THROW __attribute__((__nothrow__ __att_leaf))
 #define __THROWNL __attribute__((__nothrow__))
 #endif
 
