@@ -10,6 +10,7 @@
   add __isoc23_strtoul alias to strtoul
   move uint32_t and friends from inttypes.h to stdint.h
   add be16toh and friends to endian.h
+  gcc 15.1 doesn't like the whole rotten sunrpc code
 
 0.35:
   fix pic for x32

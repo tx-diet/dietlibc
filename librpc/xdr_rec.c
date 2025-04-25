@@ -233,8 +233,7 @@ static bool_t flush_out(RECSTREAM* rstrm, bool_t eor)
 
 static bool_t
 /* knows nothing about records!  Only about input buffers */
-fill_input_buf(rstrm)
-register RECSTREAM *rstrm;
+fill_input_buf(RECSTREAM* rstrm)
 {
 	register char* where;
 	unsigned int i;
@@ -254,10 +253,7 @@ register RECSTREAM *rstrm;
 
 static bool_t
 /* knows nothing about records!  Only about input buffers */
-get_input_bytes(rstrm, addr, len)
-register RECSTREAM *rstrm;
-register char* addr;
-register int len;
+get_input_bytes(RECSTREAM* rstrm, char* addr, int len)
 {
 	register int current;
 
@@ -279,8 +275,7 @@ register int len;
 
 static bool_t
 /* next two bytes of the input stream are treated as a header */
-set_input_fragment(rstrm)
-register RECSTREAM *rstrm;
+set_input_fragment(RECSTREAM* rstrm)
 {
 	uint32_t header;
 
@@ -306,9 +301,7 @@ register RECSTREAM *rstrm;
 
 static bool_t
 /* consumes input bytes; knows nothing about records! */
-skip_input_bytes(rstrm, cnt)
-register RECSTREAM *rstrm;
-long cnt;
+skip_input_bytes(RECSTREAM* rstrm, long cnt)
 {
 	register int current;
 
@@ -509,8 +502,7 @@ xdrrec_destroy (XDR *xdrs)
  * Before reading (deserializing from the stream, one should always call
  * this procedure to guarantee proper record alignment.
  */
-bool_t xdrrec_skiprecord(xdrs)
-XDR *xdrs;
+bool_t xdrrec_skiprecord(XDR* xdrs)
 {
 	register RECSTREAM *rstrm = (RECSTREAM *) (xdrs->x_private);
 
@@ -530,8 +522,7 @@ XDR *xdrs;
  * Returns TRUE iff there is no more input in the buffer 
  * after consuming the rest of the current record.
  */
-bool_t xdrrec_eof(xdrs)
-XDR *xdrs;
+bool_t xdrrec_eof(XDR* xdrs)
 {
 	register RECSTREAM *rstrm = (RECSTREAM *) (xdrs->x_private);
 
@@ -553,9 +544,7 @@ XDR *xdrs;
  * (output) tcp stream.  (This let's the package support batched or
  * pipelined procedure calls.)  TRUE => immmediate flush to tcp connection.
  */
-bool_t xdrrec_endofrecord(xdrs, sendnow)
-XDR *xdrs;
-bool_t sendnow;
+bool_t xdrrec_endofrecord(XDR* xdrs, bool_t sendnow)
 {
 	register RECSTREAM *rstrm = (RECSTREAM *) (xdrs->x_private);
 	register unsigned long len;		/* fragment length */

@@ -94,9 +94,7 @@ static void cache_set(SVCXPRT* xprt, unsigned long replylen);
  * see (svc.h, xprt_register).
  * The routines returns NULL if a problem occurred.
  */
-SVCXPRT *svcudp_bufcreate(sock, sendsz, recvsz)
-register int sock;
-unsigned int sendsz, recvsz;
+SVCXPRT *svcudp_bufcreate(int sock, unsigned int sendsz, unsigned int recvsz)
 {
 	bool_t madesock = FALSE;
 	register SVCXPRT *xprt;
@@ -153,23 +151,19 @@ unsigned int sendsz, recvsz;
 	return (xprt);
 }
 
-SVCXPRT *svcudp_create(sock)
-int sock;
+SVCXPRT *svcudp_create(int sock)
 {
 
 	return (svcudp_bufcreate(sock, UDPMSGSIZE, UDPMSGSIZE));
 }
 
-static enum xprt_stat svcudp_stat(xprt)
-SVCXPRT *xprt;
+static enum xprt_stat svcudp_stat(SVCXPRT* xprt)
 {
   (void)xprt;
 	return (XPRT_IDLE);
 }
 
-static bool_t svcudp_recv(xprt, msg)
-register SVCXPRT *xprt;
-struct rpc_msg *msg;
+static bool_t svcudp_recv(SVCXPRT* xprt, struct rpc_msg* msg)
 {
 	register struct svcudp_data *su = su_data(xprt);
 	register XDR *xdrs = &(su->su_xdrs);
@@ -205,9 +199,7 @@ struct rpc_msg *msg;
 	return (TRUE);
 }
 
-static bool_t svcudp_reply(xprt, msg)
-register SVCXPRT *xprt;
-struct rpc_msg *msg;
+static bool_t svcudp_reply(SVCXPRT* xprt, struct rpc_msg* msg)
 {
 	register struct svcudp_data *su = su_data(xprt);
 	register XDR *xdrs = &(su->su_xdrs);
@@ -231,19 +223,13 @@ struct rpc_msg *msg;
 	return (stat);
 }
 
-static bool_t svcudp_getargs(xprt, xdr_args, args_ptr)
-SVCXPRT *xprt;
-xdrproc_t xdr_args;
-char* args_ptr;
+static bool_t svcudp_getargs(SVCXPRT* xprt, xdrproc_t xdr_args, char* args_ptr)
 {
 
 	return ((*xdr_args) (&(su_data(xprt)->su_xdrs), args_ptr));
 }
 
-static bool_t svcudp_freeargs(xprt, xdr_args, args_ptr)
-SVCXPRT *xprt;
-xdrproc_t xdr_args;
-char* args_ptr;
+static bool_t svcudp_freeargs(SVCXPRT* xprt, xdrproc_t xdr_args, char* args_ptr)
 {
 	register XDR *xdrs = &(su_data(xprt)->su_xdrs);
 
@@ -251,8 +237,7 @@ char* args_ptr;
 	return ((*xdr_args) (xdrs, args_ptr));
 }
 
-static void svcudp_destroy(xprt)
-register SVCXPRT *xprt;
+static void svcudp_destroy(SVCXPRT* xprt)
 {
 	register struct svcudp_data *su = su_data(xprt);
 

@@ -3,6 +3,7 @@
 
 #define _GNU_SOURCE
 
+#include <sys/cdefs.h>
 #include <endian.h>
 #include <errno.h>
 #include <limits.h>
@@ -307,7 +308,7 @@ static const char sha256_rounds_prefix[] = "rounds=";
 #define ROUNDS_MAX 999999999
 
 /* Table with characters for base64 transformation.  */
-static const char b64t[64] =
+static __nonstring const char b64t[64] =
 "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 

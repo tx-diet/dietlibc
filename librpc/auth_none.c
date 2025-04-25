@@ -92,9 +92,7 @@ AUTH *authnone_create()
 	return (&ap->no_client);
 }
 
- /*ARGSUSED*/ static bool_t authnone_marshal(client, xdrs)
-AUTH *client;
-XDR *xdrs;
+ /*ARGSUSED*/ static bool_t authnone_marshal(AUTH* client, XDR* xdrs)
 {
 	register struct authnone_private *ap = authnone_private;
 

@@ -78,8 +78,7 @@ static struct rpcdata *_rpcdata()
 	return (d);
 }
 
-struct rpcent *getrpcbynumber(number)
-register int number;
+struct rpcent *getrpcbynumber(int number)
 {
 	register struct rpcdata *d = _rpcdata();
 	register struct rpcent *p;
@@ -122,8 +121,7 @@ char *name;
 #ifdef __linux__
 void
 #endif
-setrpcent(f)
-int f;
+setrpcent(int f)
 {
 	register struct rpcdata *d = _rpcdata();
 
@@ -172,8 +170,7 @@ struct rpcent *getrpcent()
 }
 
 #ifdef __linux__
-static char *firstwhite(s)
-char *s;
+static char *firstwhite(char* s)
 {
 	char *s1, *s2;
 

@@ -199,6 +199,12 @@
 #define null_terminated_string_arg(x)
 #endif
 
+#if __has_attribute(nonstring)
+#define __nonstring __attribute__((__nonstring__))
+#else
+#define __nonstring
+#endif
+
 #if __has_attribute(access)
 #define __access(a,b) access(a,b)
 #define __access3(a,b,c) access(a,b,c)

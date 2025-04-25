@@ -78,10 +78,7 @@ static struct xdr_ops xdrstdio_ops = {
  * Sets the xdr stream handle xdrs for use on the stream file.
  * Operation flag is set to op.
  */
-void xdrstdio_create(xdrs, file, op)
-register XDR *xdrs;
-FILE *file;
-enum xdr_op op;
+void xdrstdio_create(XDR* xdrs, FILE* file, enum xdr_op op)
 {
 
 	xdrs->x_op = op;
@@ -95,16 +92,13 @@ enum xdr_op op;
  * Destroy a stdio xdr stream.
  * Cleans up the xdr stream handle xdrs previously set up by xdrstdio_create.
  */
-static void xdrstdio_destroy(xdrs)
-register XDR *xdrs;
+static void xdrstdio_destroy(XDR* xdrs)
 {
 	(void) fflush((FILE *) xdrs->x_private);
 	/* xx should we close the file ?? */
 };
 
-static bool_t xdrstdio_getlong(xdrs, lp)
-XDR *xdrs;
-register long *lp;
+static bool_t xdrstdio_getlong(XDR* xdrs, long* lp)
 {
 
 	if (fread((char*) lp, sizeof(long), 1, (FILE *) xdrs->x_private) !=
@@ -116,9 +110,7 @@ register long *lp;
 	return (TRUE);
 }
 
-static bool_t xdrstdio_putlong(xdrs, lp)
-XDR *xdrs;
-const long *lp;
+static bool_t xdrstdio_putlong(XDR* xdrs, const long* lp)
 {
 
 #ifndef mc68000
@@ -132,10 +124,7 @@ const long *lp;
 	return (TRUE);
 }
 
-static bool_t xdrstdio_getbytes(xdrs, addr, len)
-XDR *xdrs;
-char* addr;
-unsigned int len;
+static bool_t xdrstdio_getbytes(XDR* xdrs, char* addr, unsigned int len)
 {
 
 	if ((len != 0)
@@ -144,10 +133,7 @@ unsigned int len;
 	return (TRUE);
 }
 
-static bool_t xdrstdio_putbytes(xdrs, addr, len)
-XDR *xdrs;
-const char* addr;
-unsigned int len;
+static bool_t xdrstdio_putbytes(XDR* xdrs, const char* addr, unsigned int len)
 {
 
 	if ((len != 0)
@@ -156,16 +142,13 @@ unsigned int len;
 	return (TRUE);
 }
 
-static unsigned int xdrstdio_getpos(xdrs)
-const XDR *xdrs;
+static unsigned int xdrstdio_getpos(const XDR* xdrs)
 {
 
 	return ((unsigned int) ftell((FILE *) xdrs->x_private));
 }
 
-static bool_t xdrstdio_setpos(xdrs, pos)
-XDR *xdrs;
-unsigned int pos;
+static bool_t xdrstdio_setpos(XDR* xdrs, unsigned int pos)
 {
 
 	return ((fseek((FILE *) xdrs->x_private, (long) pos, 0) < 0) ?

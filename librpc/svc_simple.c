@@ -48,7 +48,7 @@ static char sccsid[] =
 #include <string.h>
 
 static struct proglst {
-	char *(*p_progname) ();
+	char *(*p_progname) (char*);
 	int p_prognum;
 	int p_procnum;
 	xdrproc_t p_inproc, p_outproc;
@@ -58,7 +58,7 @@ static void universal(struct svc_req *rqstp, SVCXPRT *transp);
 static SVCXPRT *transp;
 struct proglst *pl;
 
-static int registerrpc(int prognum, int versnum, int procnum, char *(*progname)(), xdrproc_t inproc, xdrproc_t outproc)
+static int registerrpc(int prognum, int versnum, int procnum, char *(*progname)(char* ), xdrproc_t inproc, xdrproc_t outproc)
 {
 
 	if (procnum == NULLPROC) {
@@ -96,9 +96,7 @@ static int registerrpc(int prognum, int versnum, int procnum, char *(*progname)(
 	return (0);
 }
 
-static void universal(rqstp, mytransp)
-struct svc_req *rqstp;
-SVCXPRT *mytransp;
+static void universal(struct svc_req* rqstp, SVCXPRT* mytransp)
 {
 	int prog, proc;
 	char *outdata;

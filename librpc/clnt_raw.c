@@ -79,9 +79,7 @@ static struct clnt_ops client_ops = {
 /*
  * Create a client handle for memory based rpc.
  */
-CLIENT *clntraw_create(prog, vers)
-unsigned long prog;
-unsigned long vers;
+CLIENT *clntraw_create(unsigned long prog, unsigned long vers)
 {
 	register struct clntraw_private *clp = clntraw_private;
 	struct rpc_msg call_msg;
@@ -122,14 +120,7 @@ unsigned long vers;
 }
 
 static enum clnt_stat
-clntraw_call(h, proc, xargs, argsp, xresults, resultsp, timeout)
-CLIENT *h;
-unsigned long proc;
-xdrproc_t xargs;
-char* argsp;
-xdrproc_t xresults;
-char* resultsp;
-struct timeval timeout;
+clntraw_call(CLIENT* h, unsigned long proc, xdrproc_t xargs, char* argsp, xdrproc_t xresults, char* resultsp, struct timeval timeout)
 {
 	register struct clntraw_private *clp = clntraw_private;
 	register XDR *xdrs = &clp->xdr_stream;
@@ -204,10 +195,7 @@ static void clntraw_geterr(CLIENT *x, struct rpc_err *x1)
 }
 
 
-static bool_t clntraw_freeres(cl, xdr_res, res_ptr)
-CLIENT *cl;
-xdrproc_t xdr_res;
-char* res_ptr;
+static bool_t clntraw_freeres(CLIENT* cl, xdrproc_t xdr_res, char* res_ptr)
 {
 	register struct clntraw_private *clp = clntraw_private;
 	register XDR *xdrs = &clp->xdr_stream;

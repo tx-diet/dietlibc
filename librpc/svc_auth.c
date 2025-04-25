@@ -56,12 +56,12 @@ static char sccsid[] =
  *
  */
 
-enum auth_stat _svcauth_null(void);		/* no authentication */
-enum auth_stat _svcauth_unix();		/* unix style (uid, gids) */
-enum auth_stat _svcauth_short();	/* short hand unix style */
+enum auth_stat _svcauth_null(struct svc_req*, struct rpc_msg*);		/* no authentication */
+enum auth_stat _svcauth_unix(struct svc_req*, struct rpc_msg*);		/* unix style (uid, gids) */
+enum auth_stat _svcauth_short(struct svc_req*, struct rpc_msg*);	/* short hand unix style */
 
 static struct {
-	enum auth_stat (*authenticator) ();
+	enum auth_stat (*authenticator) (struct svc_req*, struct rpc_msg*);
 } svcauthsw[] = {
 	{ _svcauth_null },			/* AUTH_NULL */
 	{ _svcauth_unix },			/* AUTH_UNIX */
@@ -89,9 +89,7 @@ static struct {
  * There is an assumption that any flavour less than AUTH_NULL is
  * invalid.
  */
-enum auth_stat _authenticate(rqst, msg)
-register struct svc_req *rqst;
-struct rpc_msg *msg;
+enum auth_stat _authenticate(struct svc_req* rqst, struct rpc_msg* msg)
 {
 	register int cred_flavor;
 
@@ -106,10 +104,9 @@ struct rpc_msg *msg;
 	return (AUTH_REJECTEDCRED);
 }
 
-enum auth_stat _svcauth_null( void/*rqst, msg */ )
-	/*struct svc_req *rqst;
-	   struct rpc_msg *msg; */
+enum auth_stat _svcauth_null(struct svc_req *rqst, struct rpc_msg *msg)
 {
-
+	(void)rqst;
+	(void)msg;
 	return (AUTH_OK);
 }

@@ -44,6 +44,7 @@ static char sccsid[] = "@(#)pmap_rmt.c 1.21 87/08/27 Copyr 1984 Sun Micro";
 #include <rpc/pmap_clnt.h>
 #include <rpc/pmap_rmt.h>
 #include <sys/socket.h>
+#include <sys/poll.h>
 #include <stdio.h>
 #include <errno.h>
 //#include <net/if.h>
@@ -153,10 +154,7 @@ bool_t xdr_rmtcallres(XDR* xdrs, struct rmtcallres* crp)
  * routines which only support udp/ip .
  */
 
-static int getbroadcastnets(addrs, sock, buf)
-struct in_addr *addrs;
-int sock;						/* any valid socket will do */
-char *buf;						/* why allocxate more when we can use existing... */
+static int getbroadcastnets(struct in_addr* addrs, int sock, char* buf)
 {
   (void)addrs;
   (void)sock;
@@ -222,16 +220,8 @@ char *buf;						/* why allocxate more when we can use existing... */
 }
 
 enum clnt_stat
-clnt_broadcast(prog, vers, proc, xargs, argsp, xresults, resultsp,
-			   eachresult)
-unsigned long prog;					/* program number */
-unsigned long vers;					/* version number */
-unsigned long proc;					/* procedure number */
-xdrproc_t xargs;				/* xdr routine for args */
-char* argsp;					/* pointer to args */
-xdrproc_t xresults;				/* xdr routine for results */
-char* resultsp;				/* pointer to results */
-resultproc_t eachresult;		/* call with each result obtained */
+clnt_broadcast(unsigned long prog, unsigned long vers, unsigned long proc, xdrproc_t xargs, char* argsp, xdrproc_t xresults, char* resultsp,
+			   resultproc_t eachresult)
 {
 	enum clnt_stat stat;
 	AUTH *unix_auth = authunix_create_default();
@@ -242,13 +232,7 @@ resultproc_t eachresult;		/* call with each result obtained */
 	register int sock;
 	int on = 1;
 
-#ifdef FD_SETSIZE
-	fd_set mask;
-	fd_set readfds;
-#else
-	int readfds;
-	register int mask;
-#endif							/* def FD_SETSIZE */
+	struct pollfd readfd;
 	register int i;
 	bool_t done = FALSE;
 	register unsigned long xid;
@@ -279,12 +263,8 @@ resultproc_t eachresult;		/* call with each result obtained */
 		goto done_broad;
 	}
 #endif							/* def SO_BROADCAST */
-#ifdef FD_SETSIZE
-	FD_ZERO(&mask);
-	FD_SET(sock, &mask);
-#else
-	mask = (1 << sock);
-#endif							/* def FD_SETSIZE */
+	readfd.fd=sock;
+	readfd.events=POLLIN;
 	nets = getbroadcastnets(addrs, sock, inbuf);
 	memset((char*)&baddr,0,sizeof(baddr));
 	baddr.sin_family = AF_INET;
@@ -321,7 +301,6 @@ resultproc_t eachresult;		/* call with each result obtained */
 	 * The response timeout grows larger per iteration.
 	 */
 	for (t.tv_sec = 4; t.tv_sec <= 14; t.tv_sec += 2) {
-		struct timeval tmp;
 		for (i = 0; i < nets; i++) {
 			baddr.sin_addr = addrs[i];
 			if (sendto(sock, outbuf, (size_t)outlen, 0,
@@ -340,9 +319,7 @@ resultproc_t eachresult;		/* call with each result obtained */
 		msg.acpted_rply.ar_verf = _null_auth;
 		msg.acpted_rply.ar_results.where = (char*) & r;
 		msg.acpted_rply.ar_results.proc = (xdrproc_t)xdr_rmtcallres;
-		readfds = mask;
-		tmp=t;
-		switch (select(_rpc_dtablesize(), &readfds, 0, 0, &tmp)) {
+		switch (poll(&readfd, 1, t.tv_sec*1000+t.tv_usec/1000)) {
 
 		case 0:				/* timed out */
 			stat = RPC_TIMEDOUT;

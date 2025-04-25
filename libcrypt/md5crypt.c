@@ -27,10 +27,7 @@ static unsigned char itoa64[] =		/* 0 ... 63 => ascii - 64 */
 static void to64 (char *, uint32_t, int);
 
 static void
-to64(s, v, n)
-	char *s;
-	uint32_t v;
-	int n;
+to64(char* s, uint32_t v, int n)
 {
 	while (--n >= 0) {
 		*s++ = itoa64[v&0x3f];

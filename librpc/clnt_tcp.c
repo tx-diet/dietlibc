@@ -106,13 +106,7 @@ static int writetcp(char *ct_char, char* buf, int len);
  * NB: The rpch->cl_auth is set null authentication.  Caller may wish to set this
  * something more useful.
  */
-CLIENT *clnttcp_create(raddr, prog, vers, sockp, sendsz, recvsz)
-struct sockaddr_in *raddr;
-unsigned long prog;
-unsigned long vers;
-register int *sockp;
-unsigned int sendsz;
-unsigned int recvsz;
+CLIENT *clnttcp_create(struct sockaddr_in* raddr, unsigned long prog, unsigned long vers, int* sockp, unsigned int sendsz, unsigned int recvsz)
 {
 	CLIENT *h = NULL;
 	struct timeval now;
@@ -223,15 +217,8 @@ unsigned int recvsz;
 }
 
 static enum clnt_stat
-clnttcp_call(h, proc, xdr_args, args_ptr, xdr_results, results_ptr,
-			 timeout)
-register CLIENT *h;
-unsigned long proc;
-xdrproc_t xdr_args;
-char* args_ptr;
-xdrproc_t xdr_results;
-char* results_ptr;
-struct timeval timeout;
+clnttcp_call(CLIENT* h, unsigned long proc, xdrproc_t xdr_args, char* args_ptr, xdrproc_t xdr_results, char* results_ptr,
+			 struct timeval timeout)
 {
 	register struct ct_data *ct = (struct ct_data *) h->cl_private;
 	register XDR *xdrs = &(ct->ct_xdrs);
@@ -320,19 +307,14 @@ struct timeval timeout;
 	return (ct->ct_error.re_status);
 }
 
-static void clnttcp_geterr(h, errp)
-CLIENT *h;
-struct rpc_err *errp;
+static void clnttcp_geterr(CLIENT* h, struct rpc_err* errp)
 {
 	register struct ct_data *ct = (struct ct_data *) h->cl_private;
 
 	*errp = ct->ct_error;
 }
 
-static bool_t clnttcp_freeres(cl, xdr_res, res_ptr)
-CLIENT *cl;
-xdrproc_t xdr_res;
-char* res_ptr;
+static bool_t clnttcp_freeres(CLIENT* cl, xdrproc_t xdr_res, char* res_ptr)
 {
 	register struct ct_data *ct = (struct ct_data *) cl->cl_private;
 	register XDR *xdrs = &(ct->ct_xdrs);
@@ -345,10 +327,7 @@ static void clnttcp_abort()
 {
 }
 
-static bool_t clnttcp_control(cl, request, info)
-CLIENT *cl;
-int request;
-char *info;
+static bool_t clnttcp_control(CLIENT* cl, int request, char* info)
 {
 	register struct ct_data *ct = (struct ct_data *) cl->cl_private;
 
@@ -370,8 +349,7 @@ char *info;
 }
 
 
-static void clnttcp_destroy(h)
-CLIENT *h;
+static void clnttcp_destroy(CLIENT* h)
 {
 	register struct ct_data *ct = (struct ct_data *) h->cl_private;
 
@@ -389,10 +367,7 @@ CLIENT *h;
  * Behaves like the system calls, read & write, but keeps some error state
  * around for the rpc level.
  */
-static int readtcp(ct_char, buf, len)
-char *ct_char;
-char* buf;
-register int len;
+static int readtcp(char* ct_char, char* buf, int len)
 {
 	struct ct_data *ct=(struct ct_data *)ct_char;
 #ifdef FD_SETSIZE
@@ -448,10 +423,7 @@ register int len;
 	return (len);
 }
 
-static int writetcp(ct_char, buf, len)
-char *ct_char;
-char* buf;
-int len;
+static int writetcp(char* ct_char, char* buf, int len)
 {
 	register int i, cnt;
 	struct ct_data *ct=(struct ct_data *)ct_char;

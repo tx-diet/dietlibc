@@ -191,25 +191,20 @@ AUTH *authunix_create_default()
  * authunix operations
  */
 
-static void authunix_nextverf(auth)
-AUTH *auth;
+static void authunix_nextverf(AUTH* auth)
 {
   (void)auth;
 	/* no action necessary */
 }
 
-static bool_t authunix_marshal(auth, xdrs)
-AUTH *auth;
-XDR *xdrs;
+static bool_t authunix_marshal(AUTH* auth, XDR* xdrs)
 {
 	register struct audata *au = AUTH_PRIVATE(auth);
 
 	return (XDR_PUTBYTES(xdrs, au->au_marshed, au->au_mpos));
 }
 
-static bool_t authunix_validate(auth, verf)
-register AUTH *auth;
-struct opaque_auth *verf;
+static bool_t authunix_validate(AUTH* auth, struct opaque_auth* verf)
 {
 	register struct audata *au;
 	XDR xdrs;
@@ -235,8 +230,7 @@ struct opaque_auth *verf;
 	return (TRUE);
 }
 
-static bool_t authunix_refresh(auth)
-register AUTH *auth;
+static bool_t authunix_refresh(AUTH* auth)
 {
 	register struct audata *au = AUTH_PRIVATE(auth);
 	struct authunix_parms aup;
@@ -277,8 +271,7 @@ register AUTH *auth;
 	return (stat);
 }
 
-static void authunix_destroy(auth)
-register AUTH *auth;
+static void authunix_destroy(AUTH* auth)
 {
 	register struct audata *au = AUTH_PRIVATE(auth);
 
@@ -299,8 +292,7 @@ register AUTH *auth;
  * Marshals (pre-serializes) an auth struct.
  * sets private data, au_marshed and au_mpos
  */
-static void marshal_new_auth(auth)
-register AUTH *auth;
+static void marshal_new_auth(AUTH* auth)
 {
 	XDR xdr_stream;
 	register XDR *xdrs = &xdr_stream;
