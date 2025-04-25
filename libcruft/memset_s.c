@@ -8,6 +8,7 @@
 errno_t memset_s( void *dest, rsize_t destsz, int ch, rsize_t count ) {
   if (destsz < count || destsz > RSIZE_MAX || !dest)
     return errno=EINVAL;
-  explicit_bzero(dest, count);
+  memset(dest,ch,count);
+  asm volatile("": : "r"(dest) : "memory");
   return 0;
 }

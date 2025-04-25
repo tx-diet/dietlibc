@@ -272,9 +272,7 @@ bool_t xdr_u_char(XDR* xdrs, unsigned char* cp)
 /*
  * XDR booleans
  */
-bool_t xdr_bool(xdrs, bp)
-register XDR *xdrs;
-bool_t *bp;
+bool_t xdr_bool(XDR* xdrs, bool_t* bp)
 {
 	long lb;
 
@@ -300,9 +298,7 @@ bool_t *bp;
 /*
  * XDR enumerations
  */
-bool_t xdr_enum(xdrs, ep)
-XDR *xdrs;
-enum_t *ep;
+bool_t xdr_enum(XDR* xdrs, enum_t* ep)
 {
 	enum sizecheck { SIZEVAL };	/* used to find the size of an enum */
 
@@ -338,10 +334,7 @@ enum_t *ep;
  * Allows the specification of a fixed size sequence of opaque bytes.
  * cp points to the opaque object and cnt gives the byte length.
  */
-bool_t xdr_opaque(xdrs, cp, cnt)
-register XDR *xdrs;
-char* cp;
-register unsigned int cnt;
+bool_t xdr_opaque(XDR* xdrs, char* cp, unsigned int cnt)
 {
 	register unsigned int rndup;
 	static char crud[BYTES_PER_XDR_UNIT];
@@ -389,11 +382,7 @@ register unsigned int cnt;
  * *cpp is a pointer to the bytes, *sizep is the count.
  * If *cpp is NULL maxsize bytes are allocated
  */
-bool_t xdr_bytes(xdrs, cpp, sizep, maxsize)
-register XDR *xdrs;
-char **cpp;
-register unsigned int *sizep;
-unsigned int maxsize;
+bool_t xdr_bytes(XDR* xdrs, char** cpp, unsigned int* sizep, unsigned int maxsize)
 {
 	register char *sp = *cpp;	/* sp is the actual string pointer */
 	register unsigned int nodesize;
@@ -443,9 +432,7 @@ unsigned int maxsize;
 /*
  * Implemented here due to commonality of the object.
  */
-bool_t xdr_netobj(xdrs, np)
-XDR *xdrs;
-struct netobj *np;
+bool_t xdr_netobj(XDR* xdrs, struct netobj* np)
 {
 
 	return (xdr_bytes(xdrs, &np->n_bytes, &np->n_len, MAX_NETOBJ_SZ));
@@ -505,10 +492,7 @@ bool_t xdr_union(XDR* xdrs, enum_t* dscmp, char* unp, const struct xdr_discrim* 
  * storage is allocated.  The last parameter is the max allowed length
  * of the string as specified by a protocol.
  */
-bool_t xdr_string(xdrs, cpp, maxsize)
-register XDR *xdrs;
-char **cpp;
-unsigned int maxsize;
+bool_t xdr_string(XDR* xdrs, char** cpp, unsigned int maxsize)
 {
 	register char *sp = *cpp;	/* sp is the actual string pointer */
 	unsigned int size;
@@ -568,9 +552,7 @@ unsigned int maxsize;
  * Wrapper for xdr_string that can be called directly from 
  * routines like clnt_call
  */
-bool_t xdr_wrapstring(xdrs, cpp)
-XDR *xdrs;
-char **cpp;
+bool_t xdr_wrapstring(XDR* xdrs, char** cpp)
 {
 	if (xdr_string(xdrs, cpp, LASTUNSIGNED)) {
 		return (TRUE);

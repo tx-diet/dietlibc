@@ -48,9 +48,7 @@ static char sccsid[] =
 /*
  * XDR a call message
  */
-bool_t xdr_callmsg(xdrs, cmsg)
-register XDR *xdrs;
-register struct rpc_msg *cmsg;
+bool_t xdr_callmsg(XDR* xdrs, struct rpc_msg* cmsg)
 {
 	register int32_t *buf;
 	register struct opaque_auth *oa;

@@ -42,9 +42,7 @@ to64(char* s, uint32_t v, int n)
  */
 
 char *
-md5crypt(pw, salt)
-	register const char *pw;
-	register const char *salt;
+md5crypt(const char *pw, const char *salt)
 {
 	/*
 	 * This string is magic for this algorithm.  Having

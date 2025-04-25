@@ -49,9 +49,7 @@ static char sccsid[] =
 /*
  * XDR for unix authentication parameters.
  */
-bool_t xdr_authunix_parms(xdrs, p)
-register XDR *xdrs;
-register struct authunix_parms *p;
+bool_t xdr_authunix_parms(XDR *xdrs, struct authunix_parms *p)
 {
   int a,b;
 

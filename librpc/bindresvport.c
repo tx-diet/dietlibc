@@ -42,9 +42,7 @@
 /*
  * Bind a socket to a privileged IP port
  */
-int bindresvport(sd, sin)
-int sd;
-struct sockaddr_in *sin;
+int bindresvport(int sd, struct sockaddr_in *sin)
 {
 	int res;
 	static short port;

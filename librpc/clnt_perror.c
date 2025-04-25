@@ -206,8 +206,7 @@ static struct rpc_errtab rpc_errlist[] = {
 /*
  * This interface for use by clntrpc
  */
-char *clnt_sperrno(stat)
-enum clnt_stat stat;
+char *clnt_sperrno(enum clnt_stat stat)
 {
   (void)stat;
 #if 0
@@ -222,8 +221,7 @@ enum clnt_stat stat;
 	return ("RPC: (unknown error code)");
 }
 
-void clnt_perrno(num)
-enum clnt_stat num;
+void clnt_perrno(enum clnt_stat num)
 {
 	(void) fprintf(stderr, "%s", clnt_sperrno(num));
 }

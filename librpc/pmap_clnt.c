@@ -84,9 +84,7 @@ bool_t pmap_set(const unsigned long program, const unsigned long version, int pr
  * Remove the mapping between program,version and port.
  * Calls the pmap service remotely to do the un-mapping.
  */
-bool_t pmap_unset(program, version)
-unsigned long program;
-unsigned long version;
+bool_t pmap_unset(unsigned long program, unsigned long version)
 {
 	struct sockaddr_in myaddress;
 	int socket = -1;

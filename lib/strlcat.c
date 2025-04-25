@@ -41,10 +41,7 @@ static char *rcsid = "$OpenBSD: strlcat.c,v 1.2 1999/06/17 16:28:58 millert Exp 
  * Returns strlen(initial dst) + strlen(src); if retval >= siz,
  * truncation occurred.
  */
-size_t strlcat(dst, src, siz)
-	char *dst;
-	const char *src;
-	size_t siz;
+size_t strlcat(char* dst, const char* src, size_t siz)
 {
 	register char *d = dst;
 	register const char *s = src;
