@@ -12,7 +12,7 @@
 .text
 .globl memcmp
 memcmp:
-.glob bcmp
+.globl bcmp
 bcmp:
 	clr %o5
 .Lloop:
