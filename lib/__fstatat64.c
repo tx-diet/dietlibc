@@ -29,6 +29,9 @@ int fstatat64(int dirfd, const char* pathname, struct stat64 *buf, int flags) {
 
 #include <sys/stat.h>
 #include <fcntl.h>
+
+int fstatat64(int dirfd, const char* pathname, struct stat64 *buf, int flags);
+
 int fstatat(int dirfd, const char* pathname, struct stat *buf, int flags) {
   struct stat64 ss;
   if (fstatat64(dirfd,pathname,&ss,flags)==0) {

@@ -17,6 +17,8 @@ asm(".text\n"
     "mov r7,#119\n"     // __NR_sigreturn
     "swi 0x0\n");
 
+int __rt_sigaction(int signum, const struct sigaction *act, struct sigaction *oldact, long nr);
+
 int __libc_sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);
 int __libc_sigaction(int signum, const struct sigaction *act, struct sigaction *oldact) {
   struct sigaction *newact = (struct sigaction *)act;

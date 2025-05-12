@@ -3,7 +3,7 @@
 #include <sys/shm.h>
 #include <unistd.h>
 
-extern void* __ipc();
+extern void* __ipc(int op, int shmid, int shmflg, void** raddr, const void* shmaddr);
 
 #ifndef PAGE_SIZE
 #define PAGE_SIZE 4096
