@@ -26,6 +26,8 @@
 
 #define _PATH_TMP	"/tmp/"
 
+#define _PATH_LASTLOG	"/var/log/lastlog"
+
 #define _PATH_UTMP	"/var/run/utmp"
 #define _PATH_WTMP	"/var/log/wtmp"
 #ifdef _BSD_SOURCE
